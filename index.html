@@ -341,7 +341,7 @@
 
   .feature-list {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 2px;
   }
 
@@ -398,7 +398,7 @@
 
   .steps {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 0;
     margin-top: 64px;
     position: relative;
@@ -662,10 +662,32 @@
     .steps { grid-template-columns: 1fr 1fr; gap: 48px; }
     .steps::before { display: none; }
     .section, .features-section, .how-section, .cta-section { padding: 80px 24px; }
-    .proof-bar { padding: 20px 24px; gap: 24px; flex-wrap: wrap; }
+    .proof-bar { padding: 20px 24px; gap: 20px; flex-wrap: wrap; }
+    .proof-divider { display: none; }
     footer { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
     .email-form { flex-direction: column; }
     .email-input { border-right: 1px solid rgba(255,255,255,0.12); }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 14px 16px; }
+    .nav-cta { padding: 8px 14px; font-size: 0.8rem; }
+    .hero { padding: 88px 16px 48px; }
+    .hero-sub { font-size: 1rem; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn-primary, .btn-ghost { width: 100%; text-align: center; }
+    .section, .features-section, .how-section, .cta-section { padding: 60px 16px; }
+    .proof-bar { padding: 16px; gap: 16px; }
+    .proof-item { white-space: normal; }
+    .problem-card { padding: 28px 24px; }
+    .feature-card { padding: 36px 24px; }
+    .steps { grid-template-columns: 1fr; gap: 40px; }
+    .section-title { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+    .features-header h2 { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+    .cta-section h2 { font-size: clamp(1.75rem, 8vw, 2.5rem); }
+    .email-form { max-width: 100%; }
+    footer { padding: 24px 16px; }
+    .cta-perks { flex-direction: column; gap: 10px; }
   }
 </style>
 </head>
@@ -770,7 +792,7 @@
     <p>Newton cubre el ciclo completo del proyecto eléctrico en campo: desde que cotizas hasta que entregas. Sin funcionalidades de adorno. Sin curva de aprendizaje larga.</p>
   </div>
 
-  <div class="feature-list" style="grid-template-columns: repeat(2, 1fr);">
+  <div class="feature-list">
     <div class="feature-card" style="border-top: 2px solid var(--amber);">
       <span class="feature-number">01</span>
       <h3>Costeo de materiales y mano de obra</h3>
@@ -803,7 +825,7 @@
   <div class="section-label">Cómo funciona</div>
   <h2 class="section-title">Del costeo al cierre<br>en <em>un solo lugar.</em></h2>
 
-  <div class="steps" style="grid-template-columns: repeat(5,1fr);">
+  <div class="steps">
     <div class="step">
       <div class="step-dot"></div>
       <h4>Costea el proyecto</h4>
