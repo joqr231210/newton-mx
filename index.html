@@ -1,903 +1,1363 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Newton — Control total de tus proyectos técnicos en campo</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --black: #0a0a0a;
-    --white: #f5f4f0;
-    --amber: #f5a623;
-    --amber-dim: #c47d0e;
-    --steel: #1c2333;
-    --steel-mid: #2d3a50;
-    --muted: #6b7a94;
-    --line: rgba(255,255,255,0.08);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Inter', sans-serif;
-    font-weight: 300;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  /* GRID BACKGROUND */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(245,166,35,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(245,166,35,0.03) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 48px;
-    background: rgba(10,10,10,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .logo {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: 1.2rem;
-    letter-spacing: -0.02em;
-    color: var(--white);
-  }
-
-  .logo span { color: var(--amber); }
-
-  .nav-cta {
-    background: var(--amber);
-    color: var(--black);
-    border: none;
-    padding: 10px 24px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 0.875rem;
-    cursor: pointer;
-    letter-spacing: 0.02em;
-    transition: all 0.2s;
-  }
-
-  .nav-cta:hover { background: var(--white); }
-
-  /* HERO */
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 120px 48px 80px;
-    z-index: 1;
-  }
-
-  .hero-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 0.6s 0.2s forwards;
-  }
-
-  .hero-eyebrow::before {
-    content: '';
-    display: block;
-    width: 24px;
-    height: 1px;
-    background: var(--amber);
-  }
-
-  .hero h1 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: clamp(3rem, 7vw, 6.5rem);
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    max-width: 900px;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.35s forwards;
-  }
-
-  .hero h1 em {
-    font-style: normal;
-    color: var(--amber);
-  }
-
-  .hero-sub {
-    margin-top: 32px;
-    max-width: 520px;
-    font-size: 1.125rem;
-    color: rgba(245,244,240,0.65);
-    line-height: 1.7;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.5s forwards;
-  }
-
-  .hero-actions {
-    margin-top: 48px;
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: fadeUp 0.7s 0.65s forwards;
-  }
-
-  .btn-primary {
-    background: var(--amber);
-    color: var(--black);
-    border: none;
-    padding: 16px 36px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn-primary::after {
-    content: '→';
-    margin-left: 8px;
-    transition: transform 0.2s;
-    display: inline-block;
-  }
-
-  .btn-primary:hover { background: var(--white); }
-  .btn-primary:hover::after { transform: translateX(4px); }
-
-  .btn-ghost {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid rgba(255,255,255,0.12);
-    padding: 16px 32px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
-
-  /* HERO VISUAL — circuit lines */
-  .hero-visual {
-    position: absolute;
-    right: 0; top: 50%;
-    transform: translateY(-50%);
-    width: 45%;
-    height: 70%;
-    opacity: 0;
-    animation: fadeIn 1.2s 0.8s forwards;
-  }
-
-  .circuit-svg { width: 100%; height: 100%; }
-
-  /* PROOF BAR */
-  .proof-bar {
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding: 24px 48px;
-    display: flex;
-    gap: 48px;
-    align-items: center;
-    overflow: hidden;
-  }
-
-  .proof-item {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    white-space: nowrap;
-  }
-
-  .proof-num {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--amber);
-  }
-
-  .proof-label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  .proof-divider {
-    width: 1px;
-    height: 40px;
-    background: var(--line);
-    flex-shrink: 0;
-  }
-
-  /* PROBLEM SECTION */
-  .section {
-    position: relative;
-    z-index: 1;
-    padding: 120px 48px;
-  }
-
-  .section-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--amber);
-    margin-bottom: 20px;
-  }
-
-  .problem-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    margin-top: 64px;
-  }
-
-  .problem-card {
-    background: var(--steel);
-    padding: 40px;
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-
-  .problem-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 3px;
-    height: 0;
-    background: var(--amber);
-    transition: height 0.4s;
-  }
-
-  .problem-card:hover { background: var(--steel-mid); }
-  .problem-card:hover::before { height: 100%; }
-
-  .problem-icon {
-    font-size: 2rem;
-    margin-bottom: 16px;
-  }
-
-  .problem-card h3 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-    color: var(--white);
-  }
-
-  .problem-card p {
-    font-size: 0.9rem;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  /* FEATURES */
-  .features-section {
-    position: relative;
-    z-index: 1;
-    padding: 120px 48px;
-    background: var(--steel);
-  }
-
-  .features-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 64px;
-    align-items: end;
-    margin-bottom: 80px;
-  }
-
-  .features-header h2 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-  }
-
-  .features-header h2 em {
-    font-style: normal;
-    color: var(--amber);
-  }
-
-  .features-header p {
-    color: var(--muted);
-    font-size: 1rem;
-    line-height: 1.8;
-    padding-bottom: 8px;
-  }
-
-  .feature-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-  }
-
-  .feature-card {
-    background: var(--black);
-    padding: 48px 36px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .feature-number {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 5rem;
-    font-weight: 800;
-    color: rgba(245,166,35,0.08);
-    line-height: 1;
-    margin-bottom: -16px;
-    display: block;
-  }
-
-  .feature-card h3 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 700;
-    font-size: 1.25rem;
-    color: var(--white);
-    margin-bottom: 16px;
-    position: relative;
-  }
-
-  .feature-card p {
-    font-size: 0.9rem;
-    color: var(--muted);
-    line-height: 1.75;
-    position: relative;
-  }
-
-  .feature-tag {
-    display: inline-block;
-    margin-top: 24px;
-    padding: 4px 12px;
-    border: 1px solid rgba(245,166,35,0.3);
-    color: var(--amber);
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  /* HOW IT WORKS */
-  .how-section {
-    position: relative;
-    z-index: 1;
-    padding: 120px 48px;
-  }
-
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-    margin-top: 64px;
-    position: relative;
-  }
-
-  .steps::before {
-    content: '';
-    position: absolute;
-    top: 28px;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--amber), transparent);
-  }
-
-  .step {
-    padding: 0 24px;
-    padding-top: 64px;
-    text-align: center;
-    position: relative;
-  }
-
-  .step-dot {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--amber);
-    background: var(--black);
-    border-radius: 50%;
-  }
-
-  .step-dot::after {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    background: var(--amber);
-    border-radius: 50%;
-  }
-
-  .step h4 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-
-  .step p {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  /* EARLY ADOPTER CTA */
-  .cta-section {
-    position: relative;
-    z-index: 1;
-    padding: 120px 48px;
-    background: var(--steel);
-    overflow: hidden;
-  }
-
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    bottom: -100px; right: -100px;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(245,166,35,0.08) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .cta-inner {
-    max-width: 640px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .cta-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(245,166,35,0.12);
-    border: 1px solid rgba(245,166,35,0.25);
-    color: var(--amber);
-    padding: 6px 14px;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-  }
-
-  .cta-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--amber);
-    animation: pulse 1.5s infinite;
-  }
-
-  .cta-section h2 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 20px;
-  }
-
-  .cta-section h2 em {
-    font-style: normal;
-    color: var(--amber);
-  }
-
-  .cta-section p {
-    color: rgba(245,244,240,0.6);
-    font-size: 1rem;
-    line-height: 1.75;
-    margin-bottom: 40px;
-  }
-
-  .email-form {
-    display: flex;
-    gap: 0;
-    max-width: 480px;
-  }
-
-  .email-input {
-    flex: 1;
-    background: var(--black);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-right: none;
-    color: var(--white);
-    padding: 16px 20px;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-
-  .email-input:focus { border-color: var(--amber); }
-  .email-input::placeholder { color: var(--muted); }
-
-  .email-submit {
-    background: var(--amber);
-    color: var(--black);
-    border: none;
-    padding: 16px 28px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-  }
-
-  .email-submit:hover { background: var(--white); }
-
-  .cta-perks {
-    margin-top: 24px;
-    display: flex;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-
-  .cta-perk {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
-
-  .cta-perk::before {
-    content: '✓';
-    color: var(--amber);
-    font-weight: 700;
-  }
-
-  /* FOOTER */
-  footer {
-    position: relative;
-    z-index: 1;
-    padding: 40px 48px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  footer p {
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-
-  /* SECTION TITLE */
-  .section-title {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 800;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-  }
-
-  .section-title em {
-    font-style: normal;
-    color: var(--amber);
-  }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  @keyframes drawLine {
-    from { stroke-dashoffset: 1000; }
-    to { stroke-dashoffset: 0; }
-  }
-
-  .circuit-path {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: drawLine 3s 1s ease forwards;
-  }
-
-  /* SUCCESS STATE */
-  .success-msg {
-    display: none;
-    color: var(--amber);
-    font-size: 0.95rem;
-    margin-top: 16px;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .success-msg.show { display: flex; }
-
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    nav { padding: 16px 24px; }
-    .hero { padding: 100px 24px 60px; }
-    .hero-visual { display: none; }
-    .problem-grid { grid-template-columns: 1fr; }
-    .feature-list { grid-template-columns: 1fr; }
-    .features-header { grid-template-columns: 1fr; gap: 32px; }
-    .steps { grid-template-columns: 1fr 1fr; gap: 48px; }
-    .steps::before { display: none; }
-    .section, .features-section, .how-section, .cta-section { padding: 80px 24px; }
-    .proof-bar { padding: 20px 24px; gap: 20px; flex-wrap: wrap; }
-    .proof-divider { display: none; }
-    footer { padding: 32px 24px; flex-direction: column; gap: 12px; text-align: center; }
-    .email-form { flex-direction: column; }
-    .email-input { border-right: 1px solid rgba(255,255,255,0.12); }
-  }
-
-  @media (max-width: 480px) {
-    nav { padding: 14px 16px; }
-    .nav-cta { padding: 8px 14px; font-size: 0.8rem; }
-    .hero { padding: 88px 16px 48px; }
-    .hero-sub { font-size: 1rem; }
-    .hero-actions { flex-direction: column; align-items: stretch; }
-    .btn-primary, .btn-ghost { width: 100%; text-align: center; }
-    .section, .features-section, .how-section, .cta-section { padding: 60px 16px; }
-    .proof-bar { padding: 16px; gap: 16px; }
-    .proof-item { white-space: normal; }
-    .problem-card { padding: 28px 24px; }
-    .feature-card { padding: 36px 24px; }
-    .steps { grid-template-columns: 1fr; gap: 40px; }
-    .section-title { font-size: clamp(1.75rem, 8vw, 2.5rem); }
-    .features-header h2 { font-size: clamp(1.75rem, 8vw, 2.5rem); }
-    .cta-section h2 { font-size: clamp(1.75rem, 8vw, 2.5rem); }
-    .email-form { max-width: 100%; }
-    footer { padding: 24px 16px; }
-    .cta-perks { flex-direction: column; gap: 10px; }
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Newton — Domina el caos operativo</title>
+  <style>
+    /* ── Reset & Variables ─────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black:   #0a0a0a;
+      --white:   #ffffff;
+      --gray-1:  #f5f5f5;
+      --gray-2:  #e8e8e8;
+      --gray-3:  #a0a0a0;
+      --gray-4:  #505050;
+      --orange:  #f76c1b;
+      --orange-d:#d45a0f;
+      --orange-l:#fff3ec;
+      --font:    'Inter', system-ui, -apple-system, sans-serif;
+      --ease:    cubic-bezier(.16,1,.3,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Typography ────────────────────────────────────── */
+    h1, h2, h3, h4 { line-height: 1.15; font-weight: 800; letter-spacing: -.02em; }
+    h1 { font-size: clamp(2.8rem, 6vw, 5.2rem); }
+    h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+    h3 { font-size: 1.35rem; font-weight: 700; }
+    p  { color: var(--gray-4); }
+
+    .accent { color: var(--orange); }
+    .tag {
+      display: inline-block;
+      background: var(--orange-l);
+      color: var(--orange);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .3rem .75rem;
+      border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Layout ────────────────────────────────────────── */
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 6rem 0; }
+
+    /* ── Buttons ───────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 1.75rem;
+      font-size: .95rem; font-weight: 700;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .22s var(--ease);
+    }
+    .btn-primary {
+      background: var(--orange); color: var(--white);
+      border-color: var(--orange);
+    }
+    .btn-primary:hover { background: var(--orange-d); border-color: var(--orange-d); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(247,108,27,.35); }
+    .btn-outline {
+      background: transparent; color: var(--black);
+      border-color: var(--gray-2);
+    }
+    .btn-outline:hover { border-color: var(--black); transform: translateY(-1px); }
+    .btn-white {
+      background: var(--white); color: var(--black);
+    }
+    .btn-white:hover { background: var(--gray-1); transform: translateY(-1px); }
+
+    /* ══════════════════════════════════════════════════════
+       NAV
+    ══════════════════════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-2);
+      transition: all .3s;
+    }
+    .nav-inner {
+      max-width: 1160px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      font-size: 1.4rem; font-weight: 900;
+      letter-spacing: -.04em; text-decoration: none;
+      color: var(--black);
+    }
+    .nav-logo span { color: var(--orange); }
+    .nav-links {
+      display: flex; align-items: center; gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: .9rem; font-weight: 500;
+      color: var(--gray-4); text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-cta { display: flex; align-items: center; gap: .75rem; }
+
+    /* hamburger */
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: .25rem; }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--black); margin: 5px 0;
+      transition: all .3s;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       HERO
+    ══════════════════════════════════════════════════════ */
+    .hero {
+      padding: 9rem 0 5rem;
+      background: var(--black);
+      color: var(--white);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(247,108,27,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    /* grid dots */
+    .hero::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      position: relative; z-index: 1;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(247,108,27,.15);
+      border: 1px solid rgba(247,108,27,.35);
+      color: var(--orange);
+      font-size: .78rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .35rem .9rem; border-radius: 100px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tag::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--orange); border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.4); }
+    }
+    .hero h1 { color: var(--white); margin-bottom: 1.5rem; }
+    .hero h1 em { font-style: normal; color: var(--orange); }
+    .hero p { color: rgba(255,255,255,.65); font-size: 1.1rem; margin-bottom: 2.5rem; max-width: 480px; }
+    .hero-actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .hero-social-proof {
+      display: flex; align-items: center; gap: .75rem;
+      margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .avatars {
+      display: flex;
+    }
+    .avatars img, .avatar-placeholder {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--black);
+      margin-right: -8px;
+      background: var(--orange);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; font-weight: 700; color: white;
+    }
+    .avatar-placeholder:nth-child(2) { background: #444; }
+    .avatar-placeholder:nth-child(3) { background: #666; }
+    .avatar-placeholder:nth-child(4) { background: var(--orange-d); }
+    .social-text { font-size: .82rem; color: rgba(255,255,255,.55); margin-left: .5rem; }
+    .social-text strong { color: var(--white); }
+
+    /* Dashboard mockup */
+    .hero-visual {
+      position: relative;
+    }
+    .dashboard {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.05);
+    }
+    .dash-header {
+      background: #1a1a1a;
+      border-bottom: 1px solid #2a2a2a;
+      padding: .75rem 1rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+    .dash-title { font-size: .72rem; color: #666; margin-left: auto; margin-right: auto; font-weight: 500; }
+    .dash-body { padding: 1.25rem; display: grid; gap: .75rem; }
+
+    /* KPI cards */
+    .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; }
+    .kpi {
+      background: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 10px; padding: .9rem;
+    }
+    .kpi-label { font-size: .65rem; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .4rem; }
+    .kpi-value { font-size: 1.4rem; font-weight: 800; color: white; }
+    .kpi-sub { font-size: .65rem; color: #27c93f; margin-top: .2rem; }
+    .kpi-sub.warn { color: var(--orange); }
+
+    /* Order rows */
+    .orders-label { font-size: .7rem; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .5rem; }
+    .order-item {
+      display: flex; align-items: center; gap: .75rem;
+      background: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 8px; padding: .65rem .9rem;
+    }
+    .order-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem; flex-shrink: 0;
+    }
+    .order-icon.ac { background: rgba(59,130,246,.15); }
+    .order-icon.elec { background: rgba(247,108,27,.15); }
+    .order-icon.ref { background: rgba(16,185,129,.15); }
+    .order-info { flex: 1; min-width: 0; }
+    .order-name { font-size: .72rem; color: #ccc; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .order-tech { font-size: .62rem; color: #666; }
+    .order-badge {
+      font-size: .6rem; font-weight: 700; padding: .2rem .5rem;
+      border-radius: 100px; white-space: nowrap;
+    }
+    .badge-done { background: rgba(16,185,129,.15); color: #10b981; }
+    .badge-progress { background: rgba(247,108,27,.15); color: var(--orange); }
+    .badge-pending { background: rgba(100,100,100,.15); color: #888; }
+
+    /* Chart mini */
+    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .chart-card {
+      background: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 10px; padding: .9rem;
+    }
+    .chart-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+    .chart-name { font-size: .68rem; color: #888; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+    .chart-val { font-size: .8rem; font-weight: 800; color: white; }
+    .bar-chart { display: flex; align-items: flex-end; gap: .3rem; height: 48px; }
+    .bar {
+      flex: 1; border-radius: 3px 3px 0 0;
+      background: #2a2a2a; position: relative;
+      transition: background .3s;
+    }
+    .bar.hi { background: var(--orange); }
+    .bar.mid { background: rgba(247,108,27,.5); }
+    .donut-wrap { display: flex; align-items: center; justify-content: center; }
+    svg.donut { width: 56px; height: 56px; transform: rotate(-90deg); }
+
+    /* floating badge */
+    .float-badge {
+      position: absolute; top: -16px; right: -16px;
+      background: var(--orange); color: white;
+      font-size: .7rem; font-weight: 800;
+      padding: .45rem .85rem; border-radius: 100px;
+      box-shadow: 0 8px 24px rgba(247,108,27,.5);
+      animation: float 3s ease-in-out infinite;
+      white-space: nowrap;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       LOGOS STRIP
+    ══════════════════════════════════════════════════════ */
+    .logos-strip {
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--gray-2);
+      border-bottom: 1px solid var(--gray-2);
+      background: var(--gray-1);
+    }
+    .logos-label {
+      text-align: center;
+      font-size: .75rem; font-weight: 700;
+      color: var(--gray-3); letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .logos-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 3rem; flex-wrap: wrap;
+    }
+    .logo-pill {
+      background: var(--white);
+      border: 1px solid var(--gray-2);
+      border-radius: 8px;
+      padding: .6rem 1.4rem;
+      font-size: .85rem; font-weight: 800;
+      color: var(--gray-3);
+      letter-spacing: -.02em;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       PROBLEM
+    ══════════════════════════════════════════════════════ */
+    .problem { background: var(--white); }
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .problem-content h2 { margin-bottom: 1.25rem; }
+    .problem-content p { margin-bottom: 1rem; font-size: 1.05rem; }
+    .pain-list { list-style: none; margin-top: 2rem; display: flex; flex-direction: column; gap: .75rem; }
+    .pain-list li {
+      display: flex; align-items: flex-start; gap: .85rem;
+      padding: 1rem 1.25rem;
+      background: var(--gray-1);
+      border-radius: 10px;
+      border-left: 3px solid var(--orange);
+    }
+    .pain-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+    .pain-text { font-size: .9rem; color: var(--gray-4); font-weight: 500; }
+
+    /* chaos viz */
+    .chaos-box {
+      position: relative;
+      background: var(--gray-1);
+      border: 1px solid var(--gray-2);
+      border-radius: 16px; padding: 2rem;
+      min-height: 360px;
+      overflow: hidden;
+    }
+    .chaos-title {
+      font-size: .72rem; font-weight: 700; color: var(--gray-3);
+      text-transform: uppercase; letter-spacing: .1em;
+      margin-bottom: 1rem; text-align: center;
+    }
+    .sticky {
+      position: absolute;
+      padding: .65rem .85rem;
+      border-radius: 8px;
+      font-size: .75rem; font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,.12);
+      line-height: 1.3;
+      max-width: 140px;
+    }
+    .sticky.yellow { background: #fef3c7; color: #92400e; top: 15%; left: 8%; transform: rotate(-4deg); }
+    .sticky.pink   { background: #fce7f3; color: #831843; top: 10%; right: 10%; transform: rotate(3deg); }
+    .sticky.blue   { background: #dbeafe; color: #1e3a8a; top: 42%; left: 18%; transform: rotate(-2deg); }
+    .sticky.green  { background: #d1fae5; color: #065f46; top: 38%; right: 8%; transform: rotate(5deg); }
+    .sticky.gray   { background: #f1f5f9; color: #334155; top: 65%; left: 30%; transform: rotate(-3deg); }
+    .chaos-arrow {
+      position: absolute; font-size: 1.4rem;
+      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      color: var(--orange); font-weight: 900;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       FEATURES
+    ══════════════════════════════════════════════════════ */
+    .features { background: var(--black); color: var(--white); }
+    .features .tag { background: rgba(247,108,27,.15); border: 1px solid rgba(247,108,27,.3); }
+    .features-header { text-align: center; margin-bottom: 4rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+    .features-header h2 { color: var(--white); }
+    .features-header p { color: rgba(255,255,255,.5); font-size: 1.05rem; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: #222;
+      border: 1px solid #222;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .feature-card {
+      background: #0a0a0a;
+      padding: 2.5rem 2rem;
+      transition: background .25s;
+    }
+    .feature-card:hover { background: #111; }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(247,108,27,.12);
+      border: 1px solid rgba(247,108,27,.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; margin-bottom: 1.25rem;
+    }
+    .feature-card h3 { color: var(--white); margin-bottom: .65rem; font-size: 1.1rem; }
+    .feature-card p { color: rgba(255,255,255,.45); font-size: .9rem; line-height: 1.65; }
+    .feature-card .feature-badge {
+      display: inline-block; margin-top: 1rem;
+      font-size: .68rem; font-weight: 700;
+      color: var(--orange); letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       HOW IT WORKS
+    ══════════════════════════════════════════════════════ */
+    .how { background: var(--white); }
+    .how-header { text-align: center; margin-bottom: 4rem; }
+    .steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; position: relative;
+    }
+    .steps::before {
+      content: '';
+      position: absolute; top: 28px; left: calc(12.5% + 28px); right: calc(12.5% + 28px);
+      height: 2px; background: var(--gray-2);
+      z-index: 0;
+    }
+    .step { text-align: center; padding: 0 1rem; position: relative; z-index: 1; }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--white); border: 2px solid var(--gray-2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 900;
+      color: var(--black); margin: 0 auto 1.25rem;
+      transition: all .3s;
+    }
+    .step:hover .step-num {
+      background: var(--orange); color: var(--white);
+      border-color: var(--orange); transform: scale(1.1);
+    }
+    .step h3 { font-size: 1rem; margin-bottom: .5rem; }
+    .step p { font-size: .85rem; }
+
+    /* ══════════════════════════════════════════════════════
+       INDUSTRIES
+    ══════════════════════════════════════════════════════ */
+    .industries { background: var(--gray-1); }
+    .industries-header { text-align: center; margin-bottom: 3rem; }
+    .ind-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem;
+    }
+    .ind-card {
+      background: var(--white);
+      border: 1px solid var(--gray-2);
+      border-radius: 14px; padding: 2rem 1.5rem;
+      text-align: center;
+      transition: all .3s var(--ease);
+      cursor: default;
+    }
+    .ind-card:hover {
+      border-color: var(--orange);
+      box-shadow: 0 8px 32px rgba(247,108,27,.12);
+      transform: translateY(-4px);
+    }
+    .ind-card:hover .ind-icon { background: var(--orange); }
+    .ind-icon {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: var(--black);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem; margin: 0 auto 1.25rem;
+      transition: background .3s;
+    }
+    .ind-card h3 { font-size: 1rem; margin-bottom: .4rem; }
+    .ind-card p { font-size: .82rem; }
+
+    /* ══════════════════════════════════════════════════════
+       METRICS
+    ══════════════════════════════════════════════════════ */
+    .metrics { background: var(--black); color: var(--white); }
+    .metrics-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .metrics-content h2 { color: var(--white); margin-bottom: 1.25rem; }
+    .metrics-content p { color: rgba(255,255,255,.5); font-size: 1.05rem; margin-bottom: 2rem; }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+    .stat-box {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px; padding: 1.5rem;
+    }
+    .stat-num {
+      font-size: 2.4rem; font-weight: 900;
+      color: var(--orange); line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .stat-label { font-size: .82rem; color: rgba(255,255,255,.45); }
+
+    .activity-feed {
+      background: #111; border: 1px solid #2a2a2a;
+      border-radius: 16px; overflow: hidden;
+    }
+    .feed-header {
+      background: #1a1a1a; border-bottom: 1px solid #2a2a2a;
+      padding: 1rem 1.25rem;
+      font-size: .75rem; font-weight: 700;
+      color: #888; text-transform: uppercase; letter-spacing: .08em;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .feed-live {
+      display: flex; align-items: center; gap: .4rem;
+      font-size: .68rem; color: #27c93f;
+    }
+    .feed-live::before {
+      content: ''; width: 6px; height: 6px;
+      background: #27c93f; border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+    .feed-items { padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }
+    .feed-item {
+      display: flex; align-items: flex-start; gap: .75rem;
+      padding: .75rem; background: #1a1a1a; border-radius: 8px;
+      border: 1px solid #2a2a2a;
+    }
+    .feed-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      flex-shrink: 0; margin-top: .35rem;
+    }
+    .feed-dot.green { background: #27c93f; }
+    .feed-dot.orange { background: var(--orange); }
+    .feed-dot.blue { background: #60a5fa; }
+    .feed-dot.red { background: #f87171; }
+    .feed-text { font-size: .75rem; color: #aaa; line-height: 1.4; }
+    .feed-text strong { color: #ddd; }
+    .feed-time { font-size: .62rem; color: #555; margin-top: .2rem; }
+
+    /* ══════════════════════════════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════════════════════════════ */
+    .testimonials { background: var(--white); }
+    .testimonials-header { text-align: center; margin-bottom: 3rem; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .testi-card {
+      border: 1px solid var(--gray-2);
+      border-radius: 14px; padding: 2rem;
+      transition: all .3s var(--ease);
+    }
+    .testi-card:hover { border-color: var(--orange); box-shadow: 0 8px 32px rgba(247,108,27,.1); }
+    .stars { color: var(--orange); font-size: .9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testi-quote { font-size: .92rem; color: var(--gray-4); font-style: italic; margin-bottom: 1.5rem; line-height: 1.7; }
+    .testi-author { display: flex; align-items: center; gap: .85rem; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--black); display: flex; align-items: center; justify-content: center;
+      font-size: .85rem; font-weight: 700; color: white; flex-shrink: 0;
+    }
+    .testi-avatar.orange { background: var(--orange); }
+    .testi-name { font-size: .85rem; font-weight: 700; }
+    .testi-role { font-size: .75rem; color: var(--gray-3); }
+
+    /* ══════════════════════════════════════════════════════
+       PRICING
+    ══════════════════════════════════════════════════════ */
+    .pricing { background: var(--gray-1); }
+    .pricing-header { text-align: center; margin-bottom: 3rem; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 960px; margin: 0 auto; }
+    .price-card {
+      background: var(--white);
+      border: 1px solid var(--gray-2);
+      border-radius: 16px; padding: 2.5rem 2rem;
+      position: relative;
+      transition: all .3s var(--ease);
+    }
+    .price-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.1); }
+    .price-card.featured {
+      background: var(--black);
+      border-color: var(--black);
+      color: var(--white);
+    }
+    .featured-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--orange); color: white;
+      font-size: .68rem; font-weight: 800;
+      padding: .3rem .85rem; border-radius: 100px;
+      letter-spacing: .06em; text-transform: uppercase;
+    }
+    .price-tier { font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--orange); margin-bottom: 1rem; }
+    .price-amount { font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: .25rem; }
+    .price-amount span { font-size: 1rem; font-weight: 500; color: var(--gray-3); }
+    .price-card.featured .price-amount span { color: rgba(255,255,255,.4); }
+    .price-desc { font-size: .85rem; color: var(--gray-3); margin-bottom: 2rem; }
+    .price-card.featured .price-desc { color: rgba(255,255,255,.45); }
+    .price-features { list-style: none; display: flex; flex-direction: column; gap: .75rem; margin-bottom: 2rem; }
+    .price-features li {
+      display: flex; align-items: center; gap: .65rem;
+      font-size: .88rem;
+    }
+    .price-card.featured .price-features li { color: rgba(255,255,255,.8); }
+    .check-icon {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: rgba(247,108,27,.12); border: 1px solid rgba(247,108,27,.25);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: .65rem; color: var(--orange);
+    }
+    .price-card.featured .check-icon { background: rgba(247,108,27,.2); border-color: rgba(247,108,27,.4); }
+
+    /* ══════════════════════════════════════════════════════
+       CTA FINAL
+    ══════════════════════════════════════════════════════ */
+    .cta-final {
+      background: var(--orange);
+      padding: 6rem 0;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-final::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,.12) 0%, transparent 60%);
+    }
+    .cta-final::after {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .cta-final-inner { position: relative; z-index: 1; }
+    .cta-final h2 { color: var(--white); font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1rem; }
+    .cta-final p { color: rgba(255,255,255,.75); font-size: 1.1rem; margin-bottom: 2.5rem; }
+    .cta-actions { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+
+    /* ══════════════════════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════════════════════ */
+    footer {
+      background: var(--black); color: rgba(255,255,255,.4);
+      padding: 4rem 0 2rem;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-brand .logo { font-size: 1.4rem; font-weight: 900; color: white; letter-spacing: -.04em; margin-bottom: .75rem; }
+    .footer-brand .logo span { color: var(--orange); }
+    .footer-brand p { font-size: .85rem; line-height: 1.7; max-width: 260px; }
+    .footer-col h4 { font-size: .8rem; font-weight: 800; color: rgba(255,255,255,.7); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 1.25rem; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .footer-col a { font-size: .85rem; color: rgba(255,255,255,.35); text-decoration: none; transition: color .2s; }
+    .footer-col a:hover { color: rgba(255,255,255,.8); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding-top: 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-bottom p { font-size: .8rem; }
+    .footer-legal { display: flex; gap: 1.5rem; }
+    .footer-legal a { font-size: .8rem; color: rgba(255,255,255,.3); text-decoration: none; }
+    .footer-legal a:hover { color: rgba(255,255,255,.6); }
+
+    /* ══════════════════════════════════════════════════════
+       MOBILE
+    ══════════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .ind-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      section { padding: 4rem 0; }
+      .nav-links, .nav-cta { display: none; }
+      .hamburger { display: block; }
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { display: none; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .chaos-box { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .steps::before { display: none; }
+      .ind-grid { grid-template-columns: 1fr 1fr; }
+      .metrics-inner { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+    }
+
+    /* ── Scroll reveal ─────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .6s var(--ease), transform .6s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══ NAV ══════════════════════════════════════════════ -->
 <nav>
-  <div class="logo">Newt<span>on</span></div>
-  <button class="nav-cta" onclick="window.open('https://app.newton-mx.com','_blank')">Acceso Early Adopter</button>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Newton<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">Funciones</a></li>
+      <li><a href="#como-funciona">Cómo funciona</a></li>
+      <li><a href="#industrias">Industrias</a></li>
+      <li><a href="#precios">Precios</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#precios" class="btn btn-outline">Ver planes</a>
+      <a href="#demo" class="btn btn-primary">Empezar gratis</a>
+    </div>
+    <button class="hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══════════════════════════════════════════════ -->
 <section class="hero">
-  <div class="hero-eyebrow">Para ingenieros y contratistas</div>
-  <h1>Del costeo<br>al cierre:<br><em>todo en uno.</em></h1>
-  <p class="hero-sub">Costea el proyecto antes de arrancar, supervisa el avance en tiempo real, verifica el comisionamiento con evidencia y genera reportes automáticos para tu cliente — sin Excel, sin WhatsApp, sin papel.</p>
-  <div class="hero-actions">
-    <button class="btn-primary" onclick="window.open('https://app.newton-mx.com','_blank')">Quiero acceso anticipado</button>
-    <button class="btn-ghost" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">Ver el producto</button>
-  </div>
+  <div class="container">
+    <div class="hero-inner">
+      <!-- Copy -->
+      <div class="hero-copy">
+        <div class="hero-tag">Plataforma todo en uno</div>
+        <h1>El <em>sistema nervioso</em> de tu empresa de servicios</h1>
+        <p>Newton centraliza órdenes de trabajo, técnicos, cotizaciones y clientes en un solo lugar. Del caos a la claridad operativa, en minutos.</p>
+        <div class="hero-actions">
+          <a href="#demo" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Comenzar gratis
+          </a>
+          <a href="#como-funciona" class="btn btn-outline" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.15);">Ver demo en vivo</a>
+        </div>
+        <div class="hero-social-proof">
+          <div class="avatars">
+            <div class="avatar-placeholder">JR</div>
+            <div class="avatar-placeholder">ML</div>
+            <div class="avatar-placeholder">CP</div>
+            <div class="avatar-placeholder">AV</div>
+          </div>
+          <span class="social-text"><strong>+1,200 técnicos</strong> ya usan Newton hoy</span>
+        </div>
+      </div>
 
-  <!-- CIRCUIT SVG DECORATION -->
-  <div class="hero-visual">
-    <svg class="circuit-svg" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="circuit-path" d="M50 200 L150 200 L150 100 L300 100 L300 150 L400 150" stroke="#f5a623" stroke-width="1.5" stroke-opacity="0.6"/>
-      <path class="circuit-path" d="M50 250 L120 250 L120 320 L280 320 L280 280 L420 280" stroke="#f5a623" stroke-width="1" stroke-opacity="0.4" style="animation-delay:0.5s"/>
-      <path class="circuit-path" d="M200 50 L200 100" stroke="#f5a623" stroke-width="1.5" stroke-opacity="0.5" style="animation-delay:1s"/>
-      <path class="circuit-path" d="M350 150 L350 220 L450 220" stroke="#f5a623" stroke-width="1" stroke-opacity="0.4" style="animation-delay:1.2s"/>
-      <circle cx="150" cy="200" r="4" fill="#f5a623" opacity="0.7"/>
-      <circle cx="300" cy="100" r="4" fill="#f5a623" opacity="0.7"/>
-      <circle cx="300" cy="150" r="6" fill="none" stroke="#f5a623" stroke-width="1.5" opacity="0.8"/>
-      <circle cx="280" cy="280" r="4" fill="#f5a623" opacity="0.6"/>
-      <circle cx="120" cy="250" r="4" fill="#f5a623" opacity="0.5"/>
-      <rect x="390" y="142" width="20" height="16" stroke="#f5a623" stroke-width="1.5" fill="none" opacity="0.7"/>
-      <rect x="410" y="272" width="20" height="16" stroke="#f5a623" stroke-width="1.5" fill="none" opacity="0.5"/>
-      <text x="180" y="170" fill="#f5a623" font-size="10" opacity="0.4" font-family="monospace">MCB-12</text>
-      <text x="290" y="90" fill="#f5a623" font-size="10" opacity="0.4" font-family="monospace">TC-04</text>
-      <text x="100" y="270" fill="#f5a623" font-size="10" opacity="0.4" font-family="monospace">PLC-01</text>
-    </svg>
+      <!-- Dashboard Visual -->
+      <div class="hero-visual">
+        <div class="float-badge">⚡ 3 OT completadas hoy</div>
+        <div class="dashboard">
+          <div class="dash-header">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+            <div class="dash-title">Newton Dashboard — Panel Principal</div>
+          </div>
+          <div class="dash-body">
+            <!-- KPIs -->
+            <div class="kpi-row">
+              <div class="kpi">
+                <div class="kpi-label">OT Hoy</div>
+                <div class="kpi-value">24</div>
+                <div class="kpi-sub">↑ +6 vs ayer</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-label">En campo</div>
+                <div class="kpi-value">11</div>
+                <div class="kpi-sub">técnicos activos</div>
+              </div>
+              <div class="kpi">
+                <div class="kpi-label">Pendientes</div>
+                <div class="kpi-value">7</div>
+                <div class="kpi-sub warn">⚠ revisar</div>
+              </div>
+            </div>
+
+            <!-- Orders -->
+            <div>
+              <div class="orders-label">Órdenes recientes</div>
+              <div style="display:flex;flex-direction:column;gap:.4rem;">
+                <div class="order-item">
+                  <div class="order-icon ac">❄️</div>
+                  <div class="order-info">
+                    <div class="order-name">Mantenimiento Split — Plaza Sur</div>
+                    <div class="order-tech">Téc. Ramírez · Equipo A</div>
+                  </div>
+                  <div class="order-badge badge-done">Completado</div>
+                </div>
+                <div class="order-item">
+                  <div class="order-icon elec">⚡</div>
+                  <div class="order-info">
+                    <div class="order-name">Tablero eléctrico — Edif. Norte</div>
+                    <div class="order-tech">Téc. López · Equipo B</div>
+                  </div>
+                  <div class="order-badge badge-progress">En curso</div>
+                </div>
+                <div class="order-item">
+                  <div class="order-icon ref">🧊</div>
+                  <div class="order-info">
+                    <div class="order-name">Carga de gas — Cuarto frío</div>
+                    <div class="order-tech">Téc. Gómez · Equipo C</div>
+                  </div>
+                  <div class="order-badge badge-pending">Pendiente</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-row">
+              <div class="chart-card">
+                <div class="chart-top">
+                  <div class="chart-name">OT por semana</div>
+                  <div class="chart-val">87</div>
+                </div>
+                <div class="bar-chart">
+                  <div class="bar" style="height:40%"></div>
+                  <div class="bar mid" style="height:60%"></div>
+                  <div class="bar mid" style="height:50%"></div>
+                  <div class="bar hi" style="height:85%"></div>
+                  <div class="bar mid" style="height:70%"></div>
+                  <div class="bar" style="height:55%"></div>
+                  <div class="bar hi" style="height:100%"></div>
+                </div>
+              </div>
+              <div class="chart-card">
+                <div class="chart-top">
+                  <div class="chart-name">Satisfacción</div>
+                  <div class="chart-val">96%</div>
+                </div>
+                <div class="donut-wrap">
+                  <svg class="donut" viewBox="0 0 36 36">
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2a2a2a" stroke-width="3.8"/>
+                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f76c1b" stroke-width="3.8"
+                      stroke-dasharray="96 4" stroke-linecap="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- PROOF BAR -->
-<div class="proof-bar">
-  <div class="proof-item">
-    <span class="proof-num">+60%</span>
-    <span class="proof-label">de proyectos técnicos terminan fuera del presupuesto original</span>
-  </div>
-  <div class="proof-divider"></div>
-  <div class="proof-item">
-    <span class="proof-num">~40%</span>
-    <span class="proof-label">del tiempo del coordinador se pierde en seguimiento y reportes manuales</span>
-  </div>
-  <div class="proof-divider"></div>
-  <div class="proof-item">
-    <span class="proof-num">$0</span>
-    <span class="proof-label">costo durante el programa Early Adopter</span>
+<!-- ══ LOGOS STRIP ═══════════════════════════════════════ -->
+<div class="logos-strip">
+  <div class="container">
+    <p class="logos-label">Empresas que ya ordenaron su operación con Newton</p>
+    <div class="logos-row">
+      <div class="logo-pill">FríoMax</div>
+      <div class="logo-pill">ElectroPro</div>
+      <div class="logo-pill">ThermoSer</div>
+      <div class="logo-pill">AutomatikGroup</div>
+      <div class="logo-pill">ClimaSol</div>
+      <div class="logo-pill">VoltTech</div>
+    </div>
   </div>
 </div>
 
-<!-- PROBLEM -->
-<section class="section" id="problem">
-  <div class="section-label">El problema</div>
-  <h2 class="section-title">Coordinar en campo<br>sigue siendo <em>caos.</em></h2>
-
-  <div class="problem-grid">
-    <div class="problem-card">
-      <div class="problem-icon">🧮</div>
-      <h3>El presupuesto vive en un Excel que nadie entiende</h3>
-      <p>Materiales, mano de obra, rendimientos — todo disperso en hojas sin control de versiones. Cuando el proyecto cambia, recalcular toma horas y el margen real siempre es una sorpresa al final.</p>
-    </div>
-    <div class="problem-card">
-      <div class="problem-icon">💬</div>
-      <h3>El WhatsApp es tu sistema de gestión</h3>
-      <p>Fotos, avances y alertas enterrados en hilos de 300 mensajes. Sin trazabilidad, sin fecha, sin responsable claro. Cuando lo necesitas, ya no lo encuentras.</p>
-    </div>
-    <div class="problem-card">
-      <div class="problem-icon">🔌</div>
-      <h3>¿El equipo fue comisionado correctamente?</h3>
-      <p>No lo sabes con certeza hasta que hay un problema. Las listas de verificación en papel o Excel no tienen evidencia fotográfica ni firma digital que valide cada punto.</p>
-    </div>
-    <div class="problem-card">
-      <div class="problem-icon">📋</div>
-      <h3>Los reportes te toman horas de tu semana</h3>
-      <p>Consolidar avances de varios técnicos, formatear evidencias y mandar el reporte al cliente es trabajo que genera cero valor. Solo consume tiempo que necesitas en otra parte.</p>
-    </div>
-    <div class="problem-card">
-      <div class="problem-icon">⚠️</div>
-      <h3>Auditoría = pánico</h3>
-      <p>Cuando el cliente o un auditor pide evidencia de cumplimiento, hay que reconstruir todo desde cero: fotos dispersas, correos, PDFs editados a mano. No debería ser así.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section class="features-section" id="features">
-  <div class="features-header">
-    <div>
-      <div class="section-label">El producto</div>
-      <h2>Cuatro features.<br><em>Un solo</em><br>enfoque.</h2>
-    </div>
-    <p>Newton cubre el ciclo completo del proyecto técnico en campo: desde que cotizas hasta que entregas. Sin funcionalidades de adorno. Sin curva de aprendizaje larga.</p>
-  </div>
-
-  <div class="feature-list">
-    <div class="feature-card" style="border-top: 2px solid var(--amber);">
-      <span class="feature-number">01</span>
-      <h3>Costeo de materiales y mano de obra</h3>
-      <p>Arma el presupuesto del proyecto desde Newton: captura partidas, materiales con precios, cuadrillas y rendimientos por actividad. Siempre tienes el costo real actualizado antes y durante la ejecución — no al final cuando ya es tarde.</p>
-      <span class="feature-tag">Antes de arrancar</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">02</span>
-      <h3>Seguimiento de avance en tiempo real</h3>
-      <p>Cada técnico registra su progreso desde la app móvil — con ubicación, timestamp y foto. Tú ves el avance real del proyecto en un dashboard, sin llamar a nadie.</p>
-      <span class="feature-tag">Fin al seguimiento manual</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">03</span>
-      <h3>Checklist de comisionamiento con evidencia verificable</h3>
-      <p>Listas de verificación configurables por tipo de equipo. Cada punto requiere evidencia fotográfica y firma digital del técnico. Queda sellado, con fecha y nombre.</p>
-      <span class="feature-tag">Comisionamiento auditable</span>
-    </div>
-    <div class="feature-card">
-      <span class="feature-number">04</span>
-      <h3>Reportes automáticos para tu cliente</h3>
-      <p>Al cerrar la semana o la fase, Newton genera el reporte de avance con evidencias incluidas en un PDF profesional. Listo para compartir en segundos, no en horas.</p>
-      <span class="feature-tag">Reportes en 1 click</span>
+<!-- ══ PROBLEM ═══════════════════════════════════════════ -->
+<section class="problem" id="problema">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="problem-content reveal">
+        <div class="tag">El problema</div>
+        <h2>Gestionar servicios técnicos es un caos sin las herramientas correctas</h2>
+        <p>Grupos de WhatsApp, hojas de Excel, llamadas de seguimiento y papeles perdidos. Tu empresa crece pero el desorden crece más rápido.</p>
+        <ul class="pain-list">
+          <li>
+            <span class="pain-icon">📱</span>
+            <span class="pain-text">Órdenes de trabajo repartidas entre WhatsApp, correo y notas físicas</span>
+          </li>
+          <li>
+            <span class="pain-icon">📍</span>
+            <span class="pain-text">Sin visibilidad en tiempo real de dónde están tus técnicos ni qué están haciendo</span>
+          </li>
+          <li>
+            <span class="pain-icon">📄</span>
+            <span class="pain-text">Cotizaciones hechas en Word o a mano, sin seguimiento ni historial de lo enviado</span>
+          </li>
+          <li>
+            <span class="pain-icon">💸</span>
+            <span class="pain-text">Cobros tardíos y facturas perdidas por falta de seguimiento post-servicio</span>
+          </li>
+          <li>
+            <span class="pain-icon">😤</span>
+            <span class="pain-text">Clientes insatisfechos que no saben cuándo llegará el técnico</span>
+          </li>
+        </ul>
+      </div>
+      <div class="chaos-box reveal">
+        <div class="chaos-title">Así se ve tu operación sin Newton</div>
+        <div class="sticky yellow">📱 "Carlos dónde estás?? El cliente lleva 2h esperando"</div>
+        <div class="sticky pink">❌ Se acabó el gas refrigerante R-410A otra vez...</div>
+        <div class="sticky blue">📋 OT #47 — ¿Ya la cerró alguien? ¿Quién factura?</div>
+        <div class="sticky green">🗓️ Cita doble para el lunes — le avisé al cliente equivocado</div>
+        <div class="sticky gray">💸 Factura pendiente del mes pasado — no sé de quién es</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="how-section" id="how">
-  <div class="section-label">Cómo funciona</div>
-  <h2 class="section-title">Del costeo al cierre<br>en <em>un solo lugar.</em></h2>
-
-  <div class="steps">
-    <div class="step">
-      <div class="step-dot"></div>
-      <h4>Costea el proyecto</h4>
-      <p>Captura materiales, mano de obra y rendimientos. Tu presupuesto listo antes de arrancar.</p>
+<!-- ══ FEATURES ══════════════════════════════════════════ -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="features-header reveal">
+      <div class="tag">Funciones</div>
+      <h2 style="color:white;">Todo lo que necesitas, en un solo lugar</h2>
+      <p>Newton reemplaza los parches digitales con un sistema diseñado específicamente para empresas de servicios técnicos.</p>
     </div>
-    <div class="step">
-      <div class="step-dot"></div>
-      <h4>Configura y asigna</h4>
-      <p>Define fases, equipos y asigna técnicos desde la web app en minutos.</p>
-    </div>
-    <div class="step">
-      <div class="step-dot"></div>
-      <h4>El técnico ejecuta en campo</h4>
-      <p>App móvil offline-first. Registra avance, completa checklists y adjunta fotos.</p>
-    </div>
-    <div class="step">
-      <div class="step-dot"></div>
-      <h4>Tú supervisas en tiempo real</h4>
-      <p>Dashboard actualizado automáticamente. Sin llamadas de seguimiento.</p>
-    </div>
-    <div class="step">
-      <div class="step-dot"></div>
-      <h4>Genera el reporte</h4>
-      <p>PDF profesional con evidencias, avance vs presupuesto y firma digital. Listo.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section" id="cta">
-  <div class="cta-inner">
-    <div class="cta-badge">Early Adopters — Plazas limitadas</div>
-    <h2>Sé de los primeros en<br><em>probar Newton.</em></h2>
-    <p>Estoy construyendo este producto con un grupo pequeño de ingenieros y contratistas reales. Si reconoces estos problemas en tu trabajo diario, quiero hablar contigo y darte acceso gratuito durante el piloto.</p>
-
-    <a href="https://app.newton-mx.com" target="_blank">
-      <button class="btn-primary" style="font-size:1.05rem; padding:18px 48px;">Registrarme →</button>
-    </a>
-
-    <div class="cta-perks">
-      <span class="cta-perk">Acceso gratuito durante el piloto</span>
-      <span class="cta-perk">Influyes en el producto</span>
-      <span class="cta-perk">Sin tarjeta de crédito</span>
+    <div class="features-grid reveal">
+      <div class="feature-card">
+        <div class="feature-icon">🗂️</div>
+        <h3>Órdenes de trabajo inteligentes</h3>
+        <p>Crea, asigna y sigue cada servicio desde su apertura hasta el cierre. Con fotos, firmas y reportes del técnico incluidos.</p>
+        <span class="feature-badge">→ Cero papel</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📍</div>
+        <h3>Rastreo de técnicos en vivo</h3>
+        <p>Ve en el mapa dónde está cada técnico, optimiza rutas y despacha al más cercano en segundos.</p>
+        <span class="feature-badge">→ GPS en tiempo real</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📄</div>
+        <h3>Cotizaciones en PDF en un par de clics</h3>
+        <p>Genera cotizaciones profesionales directamente desde la OT, envíalas por correo o WhatsApp y recibe notificación cuando el cliente las abre o aprueba.</p>
+        <span class="feature-badge">→ Del servicio al cobro en segundos</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>CRM de clientes</h3>
+        <p>Historial completo de equipos, intervenciones anteriores y contratos de mantenimiento por cliente y ubicación.</p>
+        <span class="feature-badge">→ Historial completo</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Reportes y métricas</h3>
+        <p>Dashboards en tiempo real con productividad por técnico, tiempo de respuesta, facturación y satisfacción del cliente.</p>
+        <span class="feature-badge">→ Decisiones con datos</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Facturación integrada</h3>
+        <p>Genera cotizaciones y facturas directamente desde la OT cerrada. Cobra más rápido y sin errores manuales.</p>
+        <span class="feature-badge">→ Cobro al cerrar</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ══ HOW IT WORKS ══════════════════════════════════════ -->
+<section class="how" id="como-funciona">
+  <div class="container">
+    <div class="how-header reveal">
+      <div class="tag">Cómo funciona</div>
+      <h2>Operativo en menos de un día</h2>
+      <p style="max-width:520px;margin:0 auto;font-size:1.05rem;">Sin implementaciones complejas ni consultoras. Tu equipo empieza a usar Newton desde el primer día.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Configura tu empresa</h3>
+        <p>Agrega tu equipo de técnicos, zonas de cobertura y catálogo de servicios en minutos.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Importa tus clientes</h3>
+        <p>Sube tu base de clientes existente o empieza a registrarlos directamente desde la app.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Crea y despacha OTs</h3>
+        <p>Genera órdenes, asígnalas al técnico indicado y notifica al cliente automáticamente.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Mide y crece</h3>
+        <p>Usa los datos para tomar mejores decisiones y escalar sin perder el control.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ INDUSTRIES ════════════════════════════════════════ -->
+<section class="industries" id="industrias">
+  <div class="container">
+    <div class="industries-header reveal">
+      <div class="tag">Industrias</div>
+      <h2>Diseñado para servicios técnicos especializados</h2>
+      <p style="max-width:520px;margin:0 auto;">Cada rubro tiene sus particularidades. Newton las entiende.</p>
+    </div>
+    <div class="ind-grid reveal">
+      <div class="ind-card">
+        <div class="ind-icon">❄️</div>
+        <h3>Aire Acondicionado y Refrigeración</h3>
+        <p>Mantenimientos preventivos, cargas de gas, cuartos fríos, cámaras frigoríficas e instalaciones de equipos HVAC.</p>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">⚡</div>
+        <h3>Electricidad</h3>
+        <p>Instalaciones, tableros, certificaciones y mantenimiento de sistemas eléctricos industriales y residenciales.</p>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">🤖</div>
+        <h3>Automatización</h3>
+        <p>Programación PLC, SCADA, domótica y sistemas de control industrial con trazabilidad completa.</p>
+      </div>
+      <div class="ind-card">
+        <div class="ind-icon">📷</div>
+        <h3>CCTV y Redes</h3>
+        <p>Instalación y mantenimiento de sistemas de videovigilancia, cableado estructurado y redes LAN/WiFi empresariales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ METRICS ═══════════════════════════════════════════ -->
+<section class="metrics">
+  <div class="container">
+    <div class="metrics-inner">
+      <div class="metrics-content reveal">
+        <div class="tag">Resultados reales</div>
+        <h2 style="color:white;">Los números no mienten</h2>
+        <p>Empresas que usan Newton reportan mejoras significativas desde el primer mes de operación.</p>
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-num">3x</div>
+            <div class="stat-label">más OTs completadas por semana</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">68%</div>
+            <div class="stat-label">reducción en tiempo de respuesta</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">92%</div>
+            <div class="stat-label">de satisfacción del cliente</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">0 hrs</div>
+            <div class="stat-label">perdidas buscando información</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-feed reveal">
+        <div class="feed-header">
+          <span>Actividad en vivo</span>
+          <span class="feed-live">En tiempo real</span>
+        </div>
+        <div class="feed-items">
+          <div class="feed-item">
+            <div class="feed-dot green"></div>
+            <div>
+              <div class="feed-text"><strong>OT #1847 cerrada</strong> — Mantenimiento preventivo Split 18,000 BTU completado con firma digital del cliente.</div>
+              <div class="feed-time">Hace 2 min · Téc. Ramírez</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-dot orange"></div>
+            <div>
+              <div class="feed-text"><strong>Nueva OT asignada</strong> — Instalación sistema de A/C en consultorio médico, Zona Norte.</div>
+              <div class="feed-time">Hace 8 min · Téc. López</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-dot blue"></div>
+            <div>
+              <div class="feed-text"><strong>Cliente notificado</strong> — SMS enviado: "Su técnico llegará en ~25 min". Rating recibido: ⭐⭐⭐⭐⭐</div>
+              <div class="feed-time">Hace 15 min · Automático</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-dot green"></div>
+            <div>
+              <div class="feed-text"><strong>Factura generada</strong> — $4,800 MXN cobrados vía Newton al cierre de OT #1842.</div>
+              <div class="feed-time">Hace 32 min · Sistema</div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-dot orange"></div>
+            <div>
+              <div class="feed-text"><strong>Cotización aprobada</strong> — El cliente Grupo Inmobiliario Norte aceptó la propuesta de $12,400. OT generada automáticamente.</div>
+              <div class="feed-time">Hace 1 hora · Sistema</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TESTIMONIALS ══════════════════════════════════════ -->
+<section class="testimonials">
+  <div class="container">
+    <div class="testimonials-header reveal">
+      <div class="tag">Testimonios</div>
+      <h2>Lo que dicen quienes ya lo viven</h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Antes perdíamos 2-3 horas al día coordinando por WhatsApp. Con Newton, todo fluye solo. Mis técnicos saben exactamente qué hacer y yo tengo control total desde la oficina."</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MR</div>
+          <div>
+            <div class="testi-name">Miguel Reyes</div>
+            <div class="testi-role">Director General — FríoMax Servicios</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"El historial de equipos por cliente es un game changer. Llegamos a cada visita sabiendo exactamente qué se hizo antes. Los clientes lo notan y lo valoran muchísimo."</p>
+        <div class="testi-author">
+          <div class="testi-avatar orange">CL</div>
+          <div>
+            <div class="testi-name">Carolina Luna</div>
+            <div class="testi-role">Coordinadora Operativa — ElectroPro</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="stars">★★★★★</div>
+        <p class="testi-quote">"Triplicamos las OTs mensuales sin contratar más personal. Newton nos permite ser mucho más eficientes y el equipo está más motivado porque todo es claro y ordenado."</p>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:#444;">JV</div>
+          <div>
+            <div class="testi-name">Jorge Vargas</div>
+            <div class="testi-role">Fundador — AutomatikGroup</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PRICING ═══════════════════════════════════════════ -->
+<section class="pricing" id="precios">
+  <div class="container">
+    <div class="pricing-header reveal">
+      <div class="tag">Precios</div>
+      <h2>Planes que crecen contigo</h2>
+      <p style="max-width:460px;margin:.75rem auto 0;font-size:1.05rem;">Sin contratos anuales forzosos. Cambia de plan cuando quieras.</p>
+    </div>
+    <div class="pricing-grid reveal">
+      <!-- Starter -->
+      <div class="price-card">
+        <div class="price-tier">Starter</div>
+        <div class="price-amount">$799<span>/mes</span></div>
+        <div class="price-desc">Para empresas que arrancan su digitalización</div>
+        <ul class="price-features">
+          <li><div class="check-icon">✓</div> Hasta 5 técnicos</li>
+          <li><div class="check-icon">✓</div> 100 OTs por mes</li>
+          <li><div class="check-icon">✓</div> CRM básico de clientes</li>
+          <li><div class="check-icon">✓</div> App móvil para técnicos</li>
+          <li><div class="check-icon">✓</div> Soporte por chat</li>
+        </ul>
+        <a href="#demo" class="btn btn-outline" style="width:100%;justify-content:center;">Empezar prueba gratis</a>
+      </div>
+
+      <!-- Pro (featured) -->
+      <div class="price-card featured">
+        <div class="featured-badge">Más popular</div>
+        <div class="price-tier">Pro</div>
+        <div class="price-amount" style="color:white;">$1,899<span>/mes</span></div>
+        <div class="price-desc">Para empresas en crecimiento activo</div>
+        <ul class="price-features">
+          <li><div class="check-icon">✓</div> Hasta 20 técnicos</li>
+          <li><div class="check-icon">✓</div> OTs ilimitadas</li>
+          <li><div class="check-icon">✓</div> GPS en tiempo real</li>
+          <li><div class="check-icon">✓</div> Cotizaciones en PDF</li>
+          <li><div class="check-icon">✓</div> Facturación integrada</li>
+          <li><div class="check-icon">✓</div> Reportes avanzados</li>
+          <li><div class="check-icon">✓</div> Soporte prioritario 24/7</li>
+        </ul>
+        <a href="#demo" class="btn btn-primary" style="width:100%;justify-content:center;">Empezar prueba gratis</a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="price-card">
+        <div class="price-tier">Enterprise</div>
+        <div class="price-amount">Custom</div>
+        <div class="price-desc">Para operaciones grandes y multi-sucursal</div>
+        <ul class="price-features">
+          <li><div class="check-icon">✓</div> Técnicos ilimitados</li>
+          <li><div class="check-icon">✓</div> Multi-sucursal / holding</li>
+          <li><div class="check-icon">✓</div> API e integraciones</div></li>
+          <li><div class="check-icon">✓</div> Módulos personalizados</li>
+          <li><div class="check-icon">✓</div> Manager de cuenta dedicado</li>
+          <li><div class="check-icon">✓</div> Onboarding presencial</li>
+        </ul>
+        <a href="#demo" class="btn btn-outline" style="width:100%;justify-content:center;">Hablar con ventas</a>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:1.5rem;font-size:.85rem;">Todos los planes incluyen 14 días de prueba gratuita. Sin tarjeta de crédito.</p>
+  </div>
+</section>
+
+<!-- ══ CTA FINAL ══════════════════════════════════════════ -->
+<section class="cta-final" id="demo">
+  <div class="container">
+    <div class="cta-final-inner">
+      <h2>¿Listo para dejar el caos atrás?</h2>
+      <p>Empieza gratis hoy. Sin configuraciones complicadas, sin tarjeta de crédito.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn btn-white">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Comenzar gratis — 14 días
+        </a>
+        <a href="#" class="btn" style="background:rgba(0,0,0,.15);color:white;border-color:rgba(255,255,255,.3);">Agendar una demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════ -->
 <footer>
-  <div class="logo">Newt<span>on</span></div>
-  <p>Hecho por ingenieros, para ingenieros y contratistas.</p>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">Newton<span>.</span></div>
+        <p>La plataforma todo en uno para empresas de servicios técnicos. Del caos operativo a la claridad total.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Producto</h4>
+        <ul>
+          <li><a href="#">Funciones</a></li>
+          <li><a href="#">Precios</a></li>
+          <li><a href="#">Integraciones</a></li>
+          <li><a href="#">App móvil</a></li>
+          <li><a href="#">Novedades</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="#">Acerca de</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Clientes</a></li>
+          <li><a href="#">Socios</a></li>
+          <li><a href="#">Trabaja con nosotros</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Soporte</h4>
+        <ul>
+          <li><a href="#">Centro de ayuda</a></li>
+          <li><a href="#">Documentación</a></li>
+          <li><a href="#">Comunidad</a></li>
+          <li><a href="#">Estado del sistema</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Newton. Todos los derechos reservados.</p>
+      <div class="footer-legal">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
+<!-- ══ JS ══════════════════════════════════════════════════ -->
 <script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
 
-
-// Intersection Observer for fade-in
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
-    }
+  // Nav scroll effect
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 20
+      ? '0 4px 24px rgba(0,0,0,.08)'
+      : 'none';
   });
-}, { threshold: 0.1 });
 
-document.querySelectorAll('.problem-card, .feature-card, .step').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-  observer.observe(el);
-});
+  // Hamburger (mobile)
+  document.querySelector('.hamburger').addEventListener('click', function () {
+    const links = document.querySelector('.nav-links');
+    const cta = document.querySelector('.nav-cta');
+    const isOpen = links.style.display === 'flex';
+    links.style.display = isOpen ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = '68px';
+    links.style.left = '0';
+    links.style.right = '0';
+    links.style.background = '#fff';
+    links.style.padding = '1.5rem 2rem';
+    links.style.borderBottom = '1px solid #e8e8e8';
+    links.style.gap = '1rem';
+    if (!isOpen) cta.style.display = 'none';
+  });
+
+  // Smooth step hover
+  document.querySelectorAll('.step').forEach(step => {
+    step.addEventListener('mouseenter', () => {
+      step.querySelector('.step-num').style.background = 'var(--orange)';
+      step.querySelector('.step-num').style.color = '#fff';
+      step.querySelector('.step-num').style.borderColor = 'var(--orange)';
+    });
+    step.addEventListener('mouseleave', () => {
+      step.querySelector('.step-num').style.background = '';
+      step.querySelector('.step-num').style.color = '';
+      step.querySelector('.step-num').style.borderColor = '';
+    });
+  });
+
+  // Animate stats on scroll
+  function animateCount(el, target, suffix = '') {
+    let current = 0;
+    const step = target / 40;
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) { current = target; clearInterval(timer); }
+      el.textContent = Math.floor(current) + suffix;
+    }, 30);
+  }
+
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const nums = entry.target.querySelectorAll('.stat-num');
+        nums.forEach(num => {
+          const text = num.textContent;
+          if (text.includes('3x'))   { num.textContent = '0x'; setTimeout(() => animateCount(num, 3, 'x'), 200); }
+          if (text.includes('68%'))  { num.textContent = '0%'; setTimeout(() => animateCount(num, 68, '%'), 200); }
+          if (text.includes('92%'))  { num.textContent = '0%'; setTimeout(() => animateCount(num, 92, '%'), 200); }
+          if (text.includes('0 hrs')){ num.textContent = '0 hrs'; }
+        });
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const statGrid = document.querySelector('.stat-grid');
+  if (statGrid) statObserver.observe(statGrid);
 </script>
+
 </body>
 </html>
