@@ -616,6 +616,36 @@
     }
     .price-card.featured .check-icon { background: rgba(247,108,27,.2); border-color: rgba(247,108,27,.4); }
 
+    /* Pricing beta overlay */
+    .pricing-blur-wrap { position: relative; }
+    .pricing-beta-overlay {
+      position: absolute; inset: -8px;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(245,245,245,.55);
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+    }
+    .beta-headline {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 900;
+      color: var(--black);
+      text-align: center;
+      letter-spacing: -.02em;
+      max-width: 480px;
+      line-height: 1.3;
+    }
+    .beta-headline em { font-style: normal; color: var(--orange); }
+    .beta-sub {
+      font-size: .9rem; color: var(--gray-4);
+      text-align: center; max-width: 360px;
+    }
+
     /* ══════════════════════════════════════════════════════
        CTA FINAL
     ══════════════════════════════════════════════════════ */
@@ -704,6 +734,176 @@
       transition: opacity .6s var(--ease), transform .6s var(--ease);
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ══════════════════════════════════════════════════════
+       HERO VISUAL — BEFORE / AFTER
+    ══════════════════════════════════════════════════════ */
+    .before-after { display: flex; flex-direction: column; gap: .8rem; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .62rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .1em;
+      padding: .2rem .65rem; border-radius: 100px;
+      margin-bottom: .5rem;
+    }
+    .label-before { background: rgba(239,68,68,.18); color: #f87171; border: 1px solid rgba(239,68,68,.3); }
+    .label-after  { background: rgba(34,197,94,.15);  color: #4ade80; border: 1px solid rgba(34,197,94,.25); }
+
+    /* ── Chaos panel (Excel + Word) ──────────────────── */
+    .chaos-tools {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .65rem;
+    }
+
+    /* Excel */
+    .xls-card {
+      background: white; border-radius: 7px; overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0,0,0,.55);
+      transform: rotate(-2deg) translateY(3px);
+    }
+    .xls-titlebar {
+      background: #1d6a38; padding: .28rem .5rem;
+      display: flex; align-items: center; gap: .3rem;
+    }
+    .xls-titlebar span {
+      font-size: .52rem; color: rgba(255,255,255,.9);
+      font-weight: 600; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .xls-formulabar {
+      background: #f5f5f5; border-bottom: 1px solid #ddd;
+      padding: .16rem .4rem;
+      font-size: .47rem; font-family: monospace;
+      color: #c0392b; white-space: nowrap; overflow: hidden;
+    }
+    .xls-grid { display: grid; grid-template-columns: 1.1fr repeat(4, 1fr); }
+    .xls-cell {
+      border-right: 1px solid #d4d4d4; border-bottom: 1px solid #d4d4d4;
+      font-size: .47rem; padding: .12rem .18rem;
+      color: #222; white-space: nowrap; overflow: hidden; background: white;
+    }
+    .xls-cell.ch  { background: #1d6a38; color: white; font-weight: 700; }
+    .xls-cell.rh  { background: #e8f5e9; color: #2d6a4f; font-weight: 600; }
+    .xls-cell.num { color: #154360; }
+    .xls-cell.fm  { color: #922b21; font-family: monospace; font-size: .43rem; }
+    .xls-cell.y   { background: #fff9c4; }
+    .xls-cell.r   { background: #ffebee; color: #c0392b; }
+    .xls-cell.g   { background: #e8f5e9; }
+    .xls-cell.tot { background: #ffd54f; font-weight: 800; color: #333; font-size: .43rem; }
+
+    /* Word */
+    .doc-card {
+      background: white; border-radius: 7px; overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0,0,0,.55);
+      transform: rotate(1.5deg) translateY(-3px);
+    }
+    .doc-titlebar {
+      background: #2b579a; padding: .28rem .5rem;
+      display: flex; align-items: center;
+    }
+    .doc-titlebar span {
+      font-size: .5rem; color: rgba(255,255,255,.9);
+      font-weight: 600; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+    }
+    .doc-ribbon {
+      background: #f3f2f1; border-bottom: 1px solid #ddd;
+      padding: .18rem .3rem;
+      display: flex; gap: .12rem; flex-wrap: wrap; align-items: center;
+    }
+    .doc-rbtn {
+      font-size: .47rem; background: #e5e5e5;
+      border: 1px solid #bbb; padding: .07rem .16rem;
+      border-radius: 2px; color: #333; font-weight: 700;
+    }
+    .doc-rbtn.on { background: #c7deff; border-color: #2b579a; }
+    .doc-body { padding: .45rem .55rem; background: white; }
+    .doc-title-txt {
+      font-size: .6rem; font-weight: 900; color: #1a1a1a;
+      border-bottom: 2px solid #2b579a; padding-bottom: .12rem;
+      margin-bottom: .28rem; letter-spacing: -.01em;
+    }
+    .doc-sub {
+      font-size: .46rem; color: #888; margin-bottom: .28rem; font-style: italic;
+    }
+    .doc-tbl { width: 100%; border-collapse: collapse; margin-bottom: .28rem; }
+    .doc-tbl td {
+      font-size: .45rem; padding: .1rem .18rem;
+      border: 1px solid #bbb; color: #333;
+    }
+    .doc-tbl tr:first-child td { background: #dae3f3; font-weight: 700; }
+    .doc-note { font-size: .43rem; color: #e74c3c; font-style: italic; }
+
+    /* VS divider */
+    .vs-divider {
+      display: flex; align-items: center; gap: .5rem; padding: .1rem 0;
+    }
+    .vs-line { flex: 1; height: 1px; background: rgba(255,255,255,.1); }
+    .vs-text {
+      font-size: .62rem; font-weight: 700;
+      color: var(--orange); white-space: nowrap; letter-spacing: .03em;
+    }
+
+    /* ── Newton quote card ───────────────────────────── */
+    .newton-quote-card {
+      background: #111; border: 1px solid #2a2a2a;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 24px 56px rgba(0,0,0,.55), 0 0 0 1px rgba(247,108,27,.18);
+    }
+    .nq-header {
+      background: #1a1a1a; border-bottom: 1px solid #2a2a2a;
+      padding: .65rem .9rem;
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .nq-logo {
+      font-size: .92rem; font-weight: 900;
+      letter-spacing: -.03em; color: white; flex-shrink: 0;
+    }
+    .nq-logo span { color: var(--orange); }
+    .nq-meta { flex: 1; min-width: 0; }
+    .nq-num    { font-size: .58rem; font-weight: 600; color: #666; }
+    .nq-client { font-size: .7rem; font-weight: 700; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nq-badge  {
+      font-size: .55rem; font-weight: 700; padding: .16rem .48rem;
+      border-radius: 100px; background: rgba(251,191,36,.12);
+      color: #fbbf24; border: 1px solid rgba(251,191,36,.22);
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .nq-items { padding: .55rem .8rem; display: flex; flex-direction: column; gap: .3rem; }
+    .nq-col-hdr {
+      display: grid; grid-template-columns: 1fr .35fr .65fr .65fr;
+      padding: .15rem .45rem;
+      font-size: .5rem; font-weight: 700; color: #555;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .nq-item {
+      display: grid; grid-template-columns: 1fr .35fr .65fr .65fr;
+      background: #1a1a1a; border: 1px solid #2a2a2a;
+      border-radius: 6px; padding: .4rem .45rem; align-items: center;
+    }
+    .nq-iname  { font-size: .68rem; font-weight: 600; color: #ddd; }
+    .nq-iqty   { font-size: .62rem; color: #777; text-align: center; }
+    .nq-iprice { font-size: .62rem; color: #999; text-align: right; }
+    .nq-itotal { font-size: .68rem; font-weight: 700; color: white; text-align: right; }
+    .nq-sep    { height: 1px; background: #2a2a2a; margin: .05rem 0; }
+    .nq-total-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .28rem .45rem;
+    }
+    .nq-total-lbl { font-size: .58rem; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: .06em; }
+    .nq-total-amt { font-size: 1rem; font-weight: 900; color: var(--orange); }
+    .nq-footer {
+      border-top: 1px solid #2a2a2a; padding: .55rem .8rem;
+      display: flex; align-items: center; justify-content: space-between; gap: .5rem;
+    }
+    .nq-fnote { font-size: .56rem; color: #555; }
+    .nq-sendbtn {
+      background: var(--orange); color: white;
+      font-size: .68rem; font-weight: 800;
+      padding: .38rem .85rem; border-radius: 6px; border: none;
+      white-space: nowrap; cursor: pointer;
+      box-shadow: 0 4px 14px rgba(247,108,27,.4);
+    }
   </style>
 </head>
 <body>
@@ -720,7 +920,7 @@
     </ul>
     <div class="nav-cta">
       <a href="#precios" class="btn btn-outline">Ver planes</a>
-      <a href="#demo" class="btn btn-primary">Empezar gratis</a>
+      <a href="https://app.newton-mx.com" class="btn btn-primary">Empezar gratis</a>
     </div>
     <button class="hamburger" aria-label="Menú">
       <span></span><span></span><span></span>
@@ -734,15 +934,15 @@
     <div class="hero-inner">
       <!-- Copy -->
       <div class="hero-copy">
-        <div class="hero-tag">Plataforma todo en uno</div>
-        <h1>El <em>sistema nervioso</em> de tu empresa de servicios</h1>
-        <p>Newton centraliza órdenes de trabajo, técnicos, cotizaciones y clientes en un solo lugar. Del caos a la claridad operativa, en minutos.</p>
+        <div class="hero-tag">Para empresas de servicios especializados</div>
+        <h1>Deja de usar un <em>Excel roto</em> y un Word artesanal</h1>
+        <p>Para calcular tus costos y generar tus cotizaciones. Utiliza Newton y costea tus proyectos de manera fácil, eficiente y profesional.</p>
         <div class="hero-actions">
-          <a href="#demo" class="btn btn-primary">
+          <a href="https://app.newton-mx.com" class="btn btn-primary">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             Comenzar gratis
           </a>
-          <a href="#como-funciona" class="btn btn-outline" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.15);">Ver demo en vivo</a>
+          <a href="#como-funciona" class="btn btn-outline" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.15);">Ver cómo funciona</a>
         </div>
         <div class="hero-social-proof">
           <div class="avatars">
@@ -755,99 +955,143 @@
         </div>
       </div>
 
-      <!-- Dashboard Visual -->
+      <!-- Before / After Visual -->
       <div class="hero-visual">
-        <div class="float-badge">⚡ 3 OT completadas hoy</div>
-        <div class="dashboard">
-          <div class="dash-header">
-            <div class="dot dot-red"></div>
-            <div class="dot dot-yellow"></div>
-            <div class="dot dot-green"></div>
-            <div class="dash-title">Newton Dashboard — Panel Principal</div>
-          </div>
-          <div class="dash-body">
-            <!-- KPIs -->
-            <div class="kpi-row">
-              <div class="kpi">
-                <div class="kpi-label">OT Hoy</div>
-                <div class="kpi-value">24</div>
-                <div class="kpi-sub">↑ +6 vs ayer</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">En campo</div>
-                <div class="kpi-value">11</div>
-                <div class="kpi-sub">técnicos activos</div>
-              </div>
-              <div class="kpi">
-                <div class="kpi-label">Pendientes</div>
-                <div class="kpi-value">7</div>
-                <div class="kpi-sub warn">⚠ revisar</div>
-              </div>
-            </div>
+        <div class="float-badge">⚡ 3 cotizaciones aprobadas hoy</div>
+        <div class="before-after">
 
-            <!-- Orders -->
-            <div>
-              <div class="orders-label">Órdenes recientes</div>
-              <div style="display:flex;flex-direction:column;gap:.4rem;">
-                <div class="order-item">
-                  <div class="order-icon ac">❄️</div>
-                  <div class="order-info">
-                    <div class="order-name">Mantenimiento Split — Plaza Sur</div>
-                    <div class="order-tech">Téc. Ramírez · Equipo A</div>
-                  </div>
-                  <div class="order-badge badge-done">Completado</div>
-                </div>
-                <div class="order-item">
-                  <div class="order-icon elec">⚡</div>
-                  <div class="order-info">
-                    <div class="order-name">Tablero eléctrico — Edif. Norte</div>
-                    <div class="order-tech">Téc. López · Equipo B</div>
-                  </div>
-                  <div class="order-badge badge-progress">En curso</div>
-                </div>
-                <div class="order-item">
-                  <div class="order-icon ref">🧊</div>
-                  <div class="order-info">
-                    <div class="order-name">Carga de gas — Cuarto frío</div>
-                    <div class="order-tech">Téc. Gómez · Equipo C</div>
-                  </div>
-                  <div class="order-badge badge-pending">Pendiente</div>
-                </div>
-              </div>
-            </div>
+          <!-- ── ANTES ────────────────────────── -->
+          <div>
+            <div class="section-label label-before">❌ &nbsp;Antes</div>
+            <div class="chaos-tools">
 
-            <!-- Charts -->
-            <div class="chart-row">
-              <div class="chart-card">
-                <div class="chart-top">
-                  <div class="chart-name">OT por semana</div>
-                  <div class="chart-val">87</div>
+              <!-- Excel mockup -->
+              <div class="xls-card">
+                <div class="xls-titlebar">
+                  <span>Cotizacion_v4_FINAL2.xlsx</span>
                 </div>
-                <div class="bar-chart">
-                  <div class="bar" style="height:40%"></div>
-                  <div class="bar mid" style="height:60%"></div>
-                  <div class="bar mid" style="height:50%"></div>
-                  <div class="bar hi" style="height:85%"></div>
-                  <div class="bar mid" style="height:70%"></div>
-                  <div class="bar" style="height:55%"></div>
-                  <div class="bar hi" style="height:100%"></div>
+                <div class="xls-formulabar">fx =IF(B7*C7-VLOOKUP(A7,Mats!$A:$D,4)...</div>
+                <div class="xls-grid">
+                  <div class="xls-cell ch">Concepto</div>
+                  <div class="xls-cell ch">Cant</div>
+                  <div class="xls-cell ch">P.Unit</div>
+                  <div class="xls-cell ch">Desc%</div>
+                  <div class="xls-cell ch">Total</div>
+
+                  <div class="xls-cell rh">Inst. A/C</div>
+                  <div class="xls-cell num">2</div>
+                  <div class="xls-cell num y">8500</div>
+                  <div class="xls-cell num">10%</div>
+                  <div class="xls-cell fm">=B2*C2*(1-D2)</div>
+
+                  <div class="xls-cell rh">Materiales</div>
+                  <div class="xls-cell num">1</div>
+                  <div class="xls-cell num r">3200</div>
+                  <div class="xls-cell num r">???</div>
+                  <div class="xls-cell fm">=B3*C3</div>
+
+                  <div class="xls-cell rh y">M. de obra</div>
+                  <div class="xls-cell num y">1</div>
+                  <div class="xls-cell num g">4500</div>
+                  <div class="xls-cell num">0%</div>
+                  <div class="xls-cell fm">=B4*C4</div>
+
+                  <div class="xls-cell r" style="font-size:.43rem;font-weight:700;color:#c0392b;">TOTAL??</div>
+                  <div class="xls-cell r"></div>
+                  <div class="xls-cell r"></div>
+                  <div class="xls-cell r"></div>
+                  <div class="xls-cell tot">=E2+E3+E4??</div>
                 </div>
               </div>
-              <div class="chart-card">
-                <div class="chart-top">
-                  <div class="chart-name">Satisfacción</div>
-                  <div class="chart-val">96%</div>
+
+              <!-- Word mockup -->
+              <div class="doc-card">
+                <div class="doc-titlebar">
+                  <span>Cotizacion_cliente(1).docx</span>
                 </div>
-                <div class="donut-wrap">
-                  <svg class="donut" viewBox="0 0 36 36">
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#2a2a2a" stroke-width="3.8"/>
-                    <circle cx="18" cy="18" r="15.9" fill="none" stroke="#f76c1b" stroke-width="3.8"
-                      stroke-dasharray="96 4" stroke-linecap="round"/>
-                  </svg>
+                <div class="doc-ribbon">
+                  <span class="doc-rbtn on">B</span>
+                  <span class="doc-rbtn"><i>I</i></span>
+                  <span class="doc-rbtn"><u>U</u></span>
+                  <span class="doc-rbtn">12pt</span>
+                  <span class="doc-rbtn">Arial</span>
+                  <span class="doc-rbtn">≡</span>
+                  <span class="doc-rbtn">A↓</span>
+                  <span class="doc-rbtn">⬛</span>
+                </div>
+                <div class="doc-body">
+                  <div class="doc-title-txt">COTIZACIÓN DE SERVICIOS</div>
+                  <div class="doc-sub">Estimado cliente, le presentamos... [editar aquí]</div>
+                  <table class="doc-tbl">
+                    <tr><td>Concepto</td><td>Cant.</td><td>Precio</td></tr>
+                    <tr><td>Servicio A/C</td><td>2</td><td>$??,???</td></tr>
+                    <tr><td>Materiales</td><td>–</td><td>ver anexo</td></tr>
+                    <tr><td>M. de obra</td><td>1</td><td>TBD</td></tr>
+                  </table>
+                  <div class="doc-note">* Checar precios con Carlos antes de enviar</div>
                 </div>
               </div>
+
             </div>
           </div>
+
+          <!-- Divider -->
+          <div class="vs-divider">
+            <div class="vs-line"></div>
+            <span class="vs-text">↓ &nbsp;Newton lo hace mejor</span>
+            <div class="vs-line"></div>
+          </div>
+
+          <!-- ── CON NEWTON ─────────────────── -->
+          <div>
+            <div class="section-label label-after">✓ &nbsp;Con Newton</div>
+            <div class="newton-quote-card">
+              <div class="nq-header">
+                <div class="nq-logo">Newton<span>.</span></div>
+                <div class="nq-meta">
+                  <div class="nq-num">Cotización #0042</div>
+                  <div class="nq-client">Grupo Industrial del Norte S.A.</div>
+                </div>
+                <div class="nq-badge">Enviada</div>
+              </div>
+              <div class="nq-items">
+                <div class="nq-col-hdr">
+                  <span>Concepto</span>
+                  <span style="text-align:center">Cant</span>
+                  <span style="text-align:right">P. Unit.</span>
+                  <span style="text-align:right">Total</span>
+                </div>
+                <div class="nq-item">
+                  <span class="nq-iname">Instalación A/C</span>
+                  <span class="nq-iqty">2</span>
+                  <span class="nq-iprice">$8,500</span>
+                  <span class="nq-itotal">$17,000</span>
+                </div>
+                <div class="nq-item">
+                  <span class="nq-iname">Materiales</span>
+                  <span class="nq-iqty">—</span>
+                  <span class="nq-iprice">$3,200</span>
+                  <span class="nq-itotal">$3,200</span>
+                </div>
+                <div class="nq-item">
+                  <span class="nq-iname">Mano de obra</span>
+                  <span class="nq-iqty">1</span>
+                  <span class="nq-iprice">$4,500</span>
+                  <span class="nq-itotal">$4,500</span>
+                </div>
+                <div class="nq-sep"></div>
+                <div class="nq-total-row">
+                  <span class="nq-total-lbl">Total</span>
+                  <span class="nq-total-amt">$24,700 MXN</span>
+                </div>
+              </div>
+              <div class="nq-footer">
+                <span class="nq-fnote">PDF listo · generado en 8 seg</span>
+                <button class="nq-sendbtn">Enviar cotización →</button>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -1010,7 +1254,7 @@
       </div>
       <div class="ind-card">
         <div class="ind-icon">⚡</div>
-        <h3>Electricidad</h3>
+        <h3>Proyectos Eléctricos y Solares</h3>
         <p>Instalaciones, tableros, certificaciones y mantenimiento de sistemas eléctricos industriales y residenciales.</p>
       </div>
       <div class="ind-card">
@@ -1155,57 +1399,70 @@
       <h2>Planes que crecen contigo</h2>
       <p style="max-width:460px;margin:.75rem auto 0;font-size:1.05rem;">Sin contratos anuales forzosos. Cambia de plan cuando quieras.</p>
     </div>
-    <div class="pricing-grid reveal">
-      <!-- Starter -->
-      <div class="price-card">
-        <div class="price-tier">Starter</div>
-        <div class="price-amount">$799<span> MXN/mes</span></div>
-        <div class="price-desc">Para empresas que arrancan su digitalización</div>
-        <ul class="price-features">
-          <li><div class="check-icon">✓</div> Hasta 5 técnicos</li>
-          <li><div class="check-icon">✓</div> 100 OTs por mes</li>
-          <li><div class="check-icon">✓</div> CRM básico de clientes</li>
-          <li><div class="check-icon">✓</div> App móvil para técnicos</li>
-          <li><div class="check-icon">✓</div> Soporte por chat</li>
-        </ul>
-        <a href="#demo" class="btn btn-outline" style="width:100%;justify-content:center;">Empezar prueba gratis</a>
+    <div class="pricing-blur-wrap reveal">
+      <div class="pricing-grid">
+        <!-- Starter -->
+        <div class="price-card">
+          <div class="price-tier">Starter</div>
+          <div class="price-amount">$799<span> MXN/mes</span></div>
+          <div class="price-desc">Para empresas que arrancan su digitalización</div>
+          <ul class="price-features">
+            <li><div class="check-icon">✓</div> Hasta 5 técnicos</li>
+            <li><div class="check-icon">✓</div> 100 OTs por mes</li>
+            <li><div class="check-icon">✓</div> CRM básico de clientes</li>
+            <li><div class="check-icon">✓</div> App móvil para técnicos</li>
+            <li><div class="check-icon">✓</div> Soporte por chat</li>
+          </ul>
+          <a href="https://app.newton-mx.com" class="btn btn-outline" style="width:100%;justify-content:center;">Empezar prueba gratis</a>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="price-card featured">
+          <div class="featured-badge">Más popular</div>
+          <div class="price-tier">Pro</div>
+          <div class="price-amount" style="color:white;">$1,899<span> MXN/mes</span></div>
+          <div class="price-desc">Para empresas en crecimiento activo</div>
+          <ul class="price-features">
+            <li><div class="check-icon">✓</div> Hasta 20 técnicos</li>
+            <li><div class="check-icon">✓</div> OTs ilimitadas</li>
+            <li><div class="check-icon">✓</div> GPS en tiempo real</li>
+            <li><div class="check-icon">✓</div> Cotizaciones en PDF</li>
+            <li><div class="check-icon">✓</div> Facturación integrada</li>
+            <li><div class="check-icon">✓</div> Reportes avanzados</li>
+            <li><div class="check-icon">✓</div> Soporte prioritario 24/7</li>
+          </ul>
+          <a href="https://app.newton-mx.com" class="btn btn-primary" style="width:100%;justify-content:center;">Empezar prueba gratis</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="price-card">
+          <div class="price-tier">Enterprise</div>
+          <div class="price-amount">A la medida</div>
+          <div class="price-desc">Para operaciones grandes y multi-sucursal</div>
+          <ul class="price-features">
+            <li><div class="check-icon">✓</div> Técnicos ilimitados</li>
+            <li><div class="check-icon">✓</div> Multi-sucursal / holding</li>
+            <li><div class="check-icon">✓</div> API e integraciones</li>
+            <li><div class="check-icon">✓</div> Módulos personalizados</li>
+            <li><div class="check-icon">✓</div> Manager de cuenta dedicado</li>
+            <li><div class="check-icon">✓</div> Onboarding presencial</li>
+          </ul>
+          <a href="https://wa.me/523334677845" class="btn btn-outline" style="width:100%;justify-content:center;display:flex;">Hablar con ventas</a>
+        </div>
       </div>
 
-      <!-- Pro (featured) -->
-      <div class="price-card featured">
-        <div class="featured-badge">Más popular</div>
-        <div class="price-tier">Pro</div>
-        <div class="price-amount" style="color:white;">$1,899<span> MXN/mes</span></div>
-        <div class="price-desc">Para empresas en crecimiento activo</div>
-        <ul class="price-features">
-          <li><div class="check-icon">✓</div> Hasta 20 técnicos</li>
-          <li><div class="check-icon">✓</div> OTs ilimitadas</li>
-          <li><div class="check-icon">✓</div> GPS en tiempo real</li>
-          <li><div class="check-icon">✓</div> Cotizaciones en PDF</li>
-          <li><div class="check-icon">✓</div> Facturación integrada</li>
-          <li><div class="check-icon">✓</div> Reportes avanzados</li>
-          <li><div class="check-icon">✓</div> Soporte prioritario 24/7</li>
-        </ul>
-        <a href="#demo" class="btn btn-primary" style="width:100%;justify-content:center;">Empezar prueba gratis</a>
-      </div>
-
-      <!-- Enterprise -->
-      <div class="price-card">
-        <div class="price-tier">Enterprise</div>
-        <div class="price-amount">A la medida</div>
-        <div class="price-desc">Para operaciones grandes y multi-sucursal</div>
-        <ul class="price-features">
-          <li><div class="check-icon">✓</div> Técnicos ilimitados</li>
-          <li><div class="check-icon">✓</div> Multi-sucursal / holding</li>
-          <li><div class="check-icon">✓</div> API e integraciones</li>
-          <li><div class="check-icon">✓</div> Módulos personalizados</li>
-          <li><div class="check-icon">✓</div> Manager de cuenta dedicado</li>
-          <li><div class="check-icon">✓</div> Onboarding presencial</li>
-        </ul>
-        <a href="#demo" class="btn btn-outline" style="width:100%;justify-content:center;display:flex;">Hablar con ventas</a>
+      <!-- Beta overlay -->
+      <div class="pricing-beta-overlay">
+        <p class="beta-headline">Estamos en <em>Beta</em> — accede gratis mientras dure</p>
+        <p class="beta-sub">Los precios llegarán pronto. Por ahora, prueba todas las funciones sin costo.</p>
+        <a href="https://app.newton-mx.com" class="btn btn-primary" style="font-size:1.05rem;padding:1rem 2.25rem;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Probar Beta Gratis
+        </a>
+        <p style="font-size:.78rem;color:var(--gray-3);margin-top:-.25rem;">Sin tarjeta de crédito · Sin compromisos</p>
       </div>
     </div>
-    <p style="text-align:center;margin-top:1.5rem;font-size:.85rem;">Todos los planes incluyen 14 días de prueba gratuita. Sin tarjeta de crédito.</p>
+    <p style="text-align:center;margin-top:2rem;font-size:.85rem;">Todos los planes incluyen 14 días de prueba gratuita. Sin tarjeta de crédito.</p>
   </div>
 </section>
 
@@ -1213,14 +1470,14 @@
 <section class="cta-final" id="demo">
   <div class="container">
     <div class="cta-final-inner">
-      <h2>¿Listo para dejar el caos atrás?</h2>
-      <p>Empieza gratis hoy. Sin configuraciones complicadas, sin tarjeta de crédito.</p>
+      <h2>¿Listo para dejar el Excel roto atrás?</h2>
+      <p>Empieza gratis hoy y genera tus primeras cotizaciones profesionales en minutos.</p>
       <div class="cta-actions">
-        <a href="#" class="btn btn-white">
+        <a href="https://app.newton-mx.com" class="btn btn-white">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Comenzar gratis — 14 días
         </a>
-        <a href="#" class="btn" style="background:rgba(0,0,0,.15);color:white;border-color:rgba(255,255,255,.3);">Agendar una demo</a>
+        <a href="https://wa.me/523334677845" class="btn" style="background:rgba(0,0,0,.15);color:white;border-color:rgba(255,255,255,.3);">Agendar una demo</a>
       </div>
     </div>
   </div>
@@ -1261,7 +1518,7 @@
           <li><a href="#">Documentación</a></li>
           <li><a href="#">Comunidad</a></li>
           <li><a href="#">Estado del sistema</a></li>
-          <li><a href="#">Contacto</a></li>
+          <li><a href="https://wa.me/523334677845">Contacto</a></li>
         </ul>
       </div>
     </div>
