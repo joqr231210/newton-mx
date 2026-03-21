@@ -1071,6 +1071,80 @@
       font-size: .78rem; font-weight: 600;
       padding: .35rem .9rem; border-radius: 100px;
     }
+
+    /* ── Hero rotating type ─────────────────────────────── */
+    #hero-rotating-type {
+      color: #fde68a;
+      display: inline-block;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+
+    /* ── Problems Carousel ──────────────────────────────── */
+    .problem { background: var(--white); }
+    .problem-header { text-align: center; margin-bottom: 3rem; }
+    .problem-header h2 { margin-bottom: 0; }
+
+    .problems-carousel-outer {
+      overflow: hidden;
+      position: relative;
+      padding: 1rem 0 2rem;
+    }
+    .problems-carousel-outer::before,
+    .problems-carousel-outer::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 140px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .problems-carousel-outer::before {
+      left: 0;
+      background: linear-gradient(to right, var(--white), transparent);
+    }
+    .problems-carousel-outer::after {
+      right: 0;
+      background: linear-gradient(to left, var(--white), transparent);
+    }
+    .problems-carousel-track {
+      display: flex;
+      gap: 1.25rem;
+      width: max-content;
+      animation: scrollProblems 40s linear infinite;
+    }
+    .problems-carousel-track:hover { animation-play-state: paused; }
+    .problem-chip {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--gray-1);
+      border: 1px solid var(--gray-2);
+      border-radius: 14px;
+      padding: 1.5rem 2rem;
+      min-width: 280px;
+      white-space: nowrap;
+      cursor: default;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .problem-chip:hover {
+      border-color: var(--orange);
+      box-shadow: 0 4px 20px rgba(247,108,27,.12);
+    }
+    .problem-chip-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .problem-chip-text {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -.01em;
+    }
+    @keyframes scrollProblems {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
   </style>
 </head>
 <body>
@@ -1103,8 +1177,8 @@
       <!-- Copy -->
       <div class="hero-copy">
         <div class="hero-tag">Para empresas de servicios especializados</div>
-        <h2>Deja de usar un <em style="color:#4ade80;font-style:normal;">Excel roto</em> y un <em style="color:#60a5fa;font-style:normal;">Word artesanal</em> para proyectos serios.</h2>
-        <p>Utiliza Newton y costea tus proyectos de manera fácil, eficiente y profesional. Controla los costos, el avance y tu cobranza de manera fácil.</p>
+        <h2>Tu empresa de <span id="hero-rotating-type">Instalaciones Eléctricas</span>, simplificada y automatizada.</h2>
+        <p>Una plataforma centralizada para cotizar, procesar, facturar y cobrar, con agentes de IA automatizando las tareas manuales que no aportan valor.</p>
         <div class="hero-actions">
           <a href="https://app.newton-mx.com" class="btn btn-primary">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 8L8 15M1 8H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1284,41 +1358,70 @@
 <!-- ══ PROBLEM ═══════════════════════════════════════════ -->
 <section class="problem" id="problema">
   <div class="container">
-    <div class="problem-grid">
-      <div class="problem-content reveal">
-        <div class="tag">El problema</div>
-        <h2>Cotizar bien es la diferencia entre ganar o perder cada proyecto</h2>
-        <p>Tu Excel tiene fórmulas que nadie más entiende, en la versión que nadie sabe si es la correcta. Tu Word se ve como documento del 2008. Y cuando el cliente pregunta, buscas en tres carpetas antes de encontrar algo.</p>
-        <ul class="pain-list">
-          <li>
-            <span class="pain-icon">🔢</span>
-            <span class="pain-text">Calculas costos a ojo o con un Excel que se rompe cada vez que alguien lo toca</span>
-          </li>
-          <li>
-            <span class="pain-icon">📄</span>
-            <span class="pain-text">Tus cotizaciones se ven amateur — Word con tablas manuales que no reflejan lo que vales</span>
-          </li>
-          <li>
-            <span class="pain-icon">👻</span>
-            <span class="pain-text">No sabes si el cliente abrió tu propuesta ni cuándo hacerle seguimiento</span>
-          </li>
-          <li>
-            <span class="pain-icon">🔄</span>
-            <span class="pain-text">Cuando aprueban, capturas todo otra vez en otro sistema para arrancar el proyecto</span>
-          </li>
-          <li>
-            <span class="pain-icon">💸</span>
-            <span class="pain-text">Pierdes margen en cada proyecto porque no costeas bien materiales ni horas</span>
-          </li>
-        </ul>
+    <div class="problem-header reveal">
+      <div class="tag">Los problemas que no deberías tener</div>
+      <h2>¿Te suena familiar?</h2>
+    </div>
+  </div>
+  <div class="problems-carousel-outer">
+    <div class="problems-carousel-track">
+      <!-- Set 1 -->
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📝</span>
+        <span class="problem-chip-text">Cotizaciones Artesanales</span>
       </div>
-      <div class="chaos-box reveal">
-        <div class="chaos-title">Así se ve cotizar sin Newton</div>
-        <div class="sticky yellow">📊 "Cotizacion_FINAL_v3_nuevo.xlsx" — ¿cuál versión mandé al cliente?</div>
-        <div class="sticky pink">❓ ¿Ya aprobaron la propuesta de Corporativo XYZ? Nadie sabe...</div>
-        <div class="sticky blue">📝 El cliente pidió un cambio — hay que rehacer el Word desde cero</div>
-        <div class="sticky green">💰 Cotizamos $18k, el proyecto salió $26k — error en el Excel otra vez</div>
-        <div class="sticky gray">📞 "Oye, ¿me mandas la cotización de nuevo? No la encuentro"</div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">💸</span>
+        <span class="problem-chip-text">Errores de Costos</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📞</span>
+        <span class="problem-chip-text">Seguimientos Manuales</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">✏️</span>
+        <span class="problem-chip-text">Registro de Gastos a Mano</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📱</span>
+        <span class="problem-chip-text">Un Mar de Fotografías en WhatsApp</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📊</span>
+        <span class="problem-chip-text">Generación de Reportes Manuales</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📋</span>
+        <span class="problem-chip-text">Hojas de Cálculo Aisladas</span>
+      </div>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📝</span>
+        <span class="problem-chip-text">Cotizaciones Artesanales</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">💸</span>
+        <span class="problem-chip-text">Errores de Costos</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📞</span>
+        <span class="problem-chip-text">Seguimientos Manuales</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">✏️</span>
+        <span class="problem-chip-text">Registro de Gastos a Mano</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📱</span>
+        <span class="problem-chip-text">Un Mar de Fotografías en WhatsApp</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📊</span>
+        <span class="problem-chip-text">Generación de Reportes Manuales</span>
+      </div>
+      <div class="problem-chip">
+        <span class="problem-chip-icon">📋</span>
+        <span class="problem-chip-text">Hojas de Cálculo Aisladas</span>
       </div>
     </div>
   </div>
@@ -1871,6 +1974,33 @@
 
   const statGrid = document.querySelector('.stat-grid');
   if (statGrid) statObserver.observe(statGrid);
+
+  // Hero rotating business type
+  const businessTypes = [
+    'Instalaciones Eléctricas',
+    'Construcción',
+    'Mantenimiento',
+    'Refrigeración',
+    'Aire Acondicionado',
+    'Instrumentación y Control',
+    'Automatización',
+    'Limpieza',
+    'Ingeniería',
+  ];
+  let typeIndex = 0;
+  const typeEl = document.getElementById('hero-rotating-type');
+  if (typeEl) {
+    setInterval(() => {
+      typeEl.style.opacity = '0';
+      typeEl.style.transform = 'translateY(8px)';
+      setTimeout(() => {
+        typeIndex = (typeIndex + 1) % businessTypes.length;
+        typeEl.textContent = businessTypes[typeIndex];
+        typeEl.style.opacity = '1';
+        typeEl.style.transform = 'translateY(0)';
+      }, 320);
+    }, 2800);
+  }
 </script>
 
 </body>
